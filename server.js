@@ -18,4 +18,28 @@ app.get('/', (req, res) =>
 app.get('/api/notes', (req, res) => {
 console.log(notes)
 res.json(notes)
+
+console.info(`${req.method} request received to get notes`);
 });
+
+app.get('/api/notes/:notes_id', (req, res) => {
+    if (req.body && req.params.notes_id) {
+      console.info(`${req.method} request received to get a single a notes`);
+      const notesId = req.params.notes_id;
+      for (let i = 0; i < reviews.length; i++) {
+        const currentReview = reviews[i];
+        if (currentReview.review_id === reviewId) {
+          res.json(currentReview);
+          return;
+        }
+      }
+      res.json('notes ID not found');
+    }
+  });
+
+    app.post('/api/notes', (req, res) => {
+    console.info(`${req.method} request received to add a notes`);
+
+
+    })
+
