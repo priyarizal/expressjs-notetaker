@@ -1,7 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
-const uuid = require('./helpers/uuid');
+// const uuid = require('./helpers/uuid');
 var noteData = require('./db/db.json');
 // const fs = require('fs');
 
@@ -87,3 +87,5 @@ fs.readFile('./db/db.json', 'utf8', (err, data) => {
 app.listen(PORT, () =>
   console.log(`App listening at http://localhost:${PORT}`)
 );
+
+
