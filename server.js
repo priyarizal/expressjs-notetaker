@@ -1,7 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
-// const uuid = require('./helpers/uuid');
+const uuid = require('./helpers/uuid');
 var noteData = require('./db/db.json');
 // const fs = require('fs');
 
@@ -27,58 +27,57 @@ app.get('/notes', (req, res) =>
 );
 
 app.get('/api/notes', (req, res) => {
-    console.log(noteData);
-    res.json(noteData);
+  console.log(noteData);
+  res.json(noteData);
 
-    console.info(`${req.method} request received to get notes`);
+  console.info(`${req.method} request received to get notes`);
 });
 
 
 app.post('/api/notes', (req, res) => {
-    console.info(`${req.method} request received to add a note`); 
-    var noteData;
-const { title, text } = req.body;
+  console.info(`${req.method} request received to add a note`);
 
-if (title && text) {
+  const { title, text } = req.body;
+
+  if (title && text) {
     const newNote = {
-        title,
-        text,
-        noteData_id: uuid(),
-
+      title,
+      text,
+      id: uuid(),
     };
 
-fs.readFile('./db/db.json', 'utf8', (err, data) => {
-    if (err) {
-        console.error(err);
-    } else {
-       let parsedNotes = JSON.parse(data)
+    // fs.readFile('./db/db.json', 'utf8', (err, data) => {
+    //     if (err) {
+    //         console.error(err);
+    //     } else {
+    //        let parsedNotes = JSON.parse(data)
 
-       parsedNotes.push(newNote);
+    //        parsedNotes.push(newNote);
 
-        noteData = parsedNotes;
-        
+    //         noteData = parsedNotes;
 
-       fs.writeFile(
-        './db/db.json',
-        JSON.stringify(noteData),
-        (writeErr) =>
-          writeErr
-            ? console.error(writeErr)
-            : console.info('Successfully updated notes!')
-       );
-    }
-});
-        const response = {
-            status: 'success',
-            body: newNote,
-        };
+    noteData.push(newNote);
+    fs.writeFile(
+      './db/db.json',
+      JSON.stringify(noteData),
+      (writeErr) =>
+        writeErr
+          ? console.error(writeErr)
+          : console.info('Successfully updated notes!')
+    );
 
-        console.log(response);
-        res.send(noteData);
-        } else {
-        res.json('Error in posting review');
 
-    }
+    // const response = {
+    //     status: 'success',
+    //     body: newNote,
+    // };
+
+    // console.log(response);
+    res.send(noteData);
+    // } else {
+    // res.json('Error in posting review');
+
+  }
 });
 
 // app.delete()
