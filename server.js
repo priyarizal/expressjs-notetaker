@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3002;
 const app = express();
 
 
-
+//middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -21,7 +21,7 @@ app.get('/', (req, res) =>
   res.sendFile(path.join(__dirname, '/public/index.html'))
 );
 
-//GET route for note taking pagr
+//GET route for the takenote page
 app.get('/notes', (req, res) =>
   res.sendFile(path.join(__dirname, '/public/notes.html'))
 );
@@ -33,7 +33,7 @@ app.get('/api/notes', (req, res) => {
   console.info(`${req.method} request received to get notes`);
 });
 
-
+//post route to actually write something
 app.post('/api/notes', (req, res) => {
   console.info(`${req.method} request received to add a note`);
 
@@ -46,16 +46,8 @@ app.post('/api/notes', (req, res) => {
       id: uuid(),
     };
 
-    // fs.readFile('./db/db.json', 'utf8', (err, data) => {
-    //     if (err) {
-    //         console.error(err);
-    //     } else {
-    //        let parsedNotes = JSON.parse(data)
-
-    //        parsedNotes.push(newNote);
-
-    //         noteData = parsedNotes;
-
+   
+//saves and retrives note data from a JSON file
     noteData.push(newNote);
     fs.writeFile(
       './db/db.json',
@@ -66,21 +58,12 @@ app.post('/api/notes', (req, res) => {
           : console.info('Successfully updated notes!')
     );
 
-
-    // const response = {
-    //     status: 'success',
-    //     body: newNote,
-    // };
-
-    // console.log(response);
     res.send(noteData);
-    // } else {
-    // res.json('Error in posting review');
-
+    
   }
 });
 
-// app.delete()
+//delete button 
 app.delete('/api/notes/:id', (req, res) => {
   const { id } = req.params;
   const deleted = noteData.find(noteData => noteData.id === id);
